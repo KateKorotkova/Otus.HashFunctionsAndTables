@@ -72,6 +72,30 @@ namespace Tests
         }
 
         [Test]
+        public void Can_Put_With_Rehash_Without_Collisions()
+        {
+            var hashTable = new CustomHashTableWithChain(1);
+
+            var firstKey = 1;
+            var firstValue = _random.Next().ToString();
+            var secondKey = 2;
+            var secondValue = _random.Next().ToString();
+            var thirdKey = 3;
+            var thirdValue = _random.Next().ToString();
+
+            hashTable.Put(firstKey, firstValue);
+            hashTable.Put(secondKey, secondValue);
+            hashTable.Put(thirdKey, thirdValue);
+
+            Assert.That(hashTable.Buckets[1].Key, Is.EqualTo(firstKey));
+            Assert.That(hashTable.Buckets[1].Value, Is.EqualTo(firstValue));
+            Assert.That(hashTable.Buckets[2].Key, Is.EqualTo(secondKey));
+            Assert.That(hashTable.Buckets[2].Value, Is.EqualTo(secondValue));
+            Assert.That(hashTable.Buckets[3].Key, Is.EqualTo(thirdKey));
+            Assert.That(hashTable.Buckets[3].Value, Is.EqualTo(thirdValue));
+        }
+
+        [Test]
         public void Can_Get_Without_Collision()
         {
             var hashTable = new CustomHashTableWithChain(_capacity);
