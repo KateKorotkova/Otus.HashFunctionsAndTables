@@ -100,15 +100,14 @@ namespace Otus.HashFunctionsAndTables.Logic
                     if (previousEntry == null)
                     {
                         Buckets[indexInBuckets] = existedEntry.Next;
-                        _size--;
-                        return true;
                     }
                     else
                     {
                         previousEntry.Next = existedEntry.Next;
-                        _size--;
-                        return true;
                     }
+
+                    _size--;
+                    return true;
                 }
 
                 previousEntry = existedEntry;
