@@ -54,12 +54,47 @@ namespace Otus.HashFunctionsAndTables.Logic
             }
         }
 
+        public Entry Get(int key)
+        {
+            var indexInBuckets = GetHash(key);
+            
+            var existedEntry = Buckets[indexInBuckets];
+            if (existedEntry == null)
+                return null;
+
+            if (existedEntry.Key == key)
+                return existedEntry;
+
+            do
+            {
+                if (existedEntry.Next == null)
+                {
+                    return null;
+                }
+
+                if (existedEntry.Next.Key == key)
+                {
+                    return existedEntry.Next;
+                }
+
+                existedEntry = existedEntry.Next;
+            }
+            while (existedEntry != null);
+
+            return null;
+        }
+
         
         #region Support Methods
 
         private int GetHash(int key)
         {
             return Math.Abs(key.GetHashCode() % Buckets.Length);
+        }
+
+        private void Rehash()
+        {
+
         }
 
         #endregion
