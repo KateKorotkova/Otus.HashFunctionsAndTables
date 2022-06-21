@@ -124,5 +124,74 @@ namespace Tests
             Assert.That(result.Key, Is.EqualTo(thirdKey));
             Assert.That(result.Value, Is.EqualTo(thirdValue));
         }
+
+
+
+        [Test]
+        public void Can_Remove_Without_Collision()
+        {
+            var hashTable = new CustomHashTableWithChain(_capacity);
+            var key = 1;
+            hashTable.Put(key, _random.Next().ToString());
+
+            var result = hashTable.Remove(key);
+
+            Assert.IsTrue(result);
+            Assert.IsNull(hashTable.Buckets[1]);
+        }
+
+        [Test]
+        public void Can_Remove_With_One_Collision()
+        {
+            var hashTable = new CustomHashTableWithChain(_capacity);
+            var firstKey = 1;
+            var secondKey = 11;
+            hashTable.Put(firstKey, _random.Next().ToString());
+            hashTable.Put(secondKey, _random.Next().ToString());
+
+            var result = hashTable.Remove(secondKey);
+
+            Assert.IsTrue(result);
+            Assert.That(hashTable.Buckets[1].Key, Is.EqualTo(firstKey));
+            Assert.IsNull(hashTable.Buckets[1].Next);
+        }
+
+        [Test]
+        public void Can_Remove_With_Two_Collisions()
+        {
+            var hashTable = new CustomHashTableWithChain(_capacity);
+            var firstKey = 1;
+            var secondKey = 11;
+            var thirdKey = 21;
+            hashTable.Put(firstKey, _random.Next().ToString());
+            hashTable.Put(secondKey, _random.Next().ToString());
+            hashTable.Put(thirdKey, _random.Next().ToString());
+
+            var result = hashTable.Remove(thirdKey);
+
+            Assert.IsTrue(result);
+            Assert.That(hashTable.Buckets[1].Key, Is.EqualTo(firstKey));
+            Assert.That(hashTable.Buckets[1].Next.Key, Is.EqualTo(secondKey));
+            Assert.IsNull(hashTable.Buckets[1].Next.Next);
+        }
+
+        [Test]
+        public void Can_Remove_With_Two_Collisions_In_A_Middle()
+        {
+            var hashTable = new CustomHashTableWithChain(_capacity);
+            var firstKey = 1;
+            var secondKey = 11;
+            var thirdKey = 21;
+            hashTable.Put(firstKey, _random.Next().ToString());
+            hashTable.Put(secondKey, _random.Next().ToString());
+            hashTable.Put(thirdKey, _random.Next().ToString());
+
+            var result = hashTable.Remove(secondKey);
+
+            Assert.IsTrue(result);
+            Assert.That(hashTable.Buckets[1].Key, Is.EqualTo(firstKey));
+            Assert.That(hashTable.Buckets[1].Next.Key, Is.EqualTo(thirdKey));
+            Assert.IsNull(hashTable.Buckets[1].Next.Next);
+        }
     }
 }
