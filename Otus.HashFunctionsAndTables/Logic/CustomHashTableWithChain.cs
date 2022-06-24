@@ -2,23 +2,23 @@
 
 namespace Otus.HashFunctionsAndTables.Logic
 {
-    public class CustomHashTableWithChain
+    public class CustomHashTableWithChain<TKey, TValue>
     {
         private int _capacity;
         private int _size;
         private readonly float _loadFactor = 0.5f;
         private int Threshold => (int) (_capacity * _loadFactor);
 
-        public Entry[] Buckets { get; set; }
+        public Entry<TKey, TValue>[] Buckets { get; set; }
 
         public CustomHashTableWithChain(int capacity)
         {
             _capacity = capacity;
-            Buckets = new Entry[_capacity];
+            Buckets = new Entry<TKey, TValue>[_capacity];
         }
 
 
-        public void Put(int key, string value)
+        public void Put(TKey key, TValue value)
         {
             var indexInBuckets = GetHash(key);
 
@@ -31,7 +31,7 @@ namespace Otus.HashFunctionsAndTables.Logic
                     indexInBuckets = GetHash(key);
                 }
 
-                existedEntry = new Entry(key, value);
+                existedEntry = new Entry<TKey, TValue>(key, value);
                 Buckets[indexInBuckets] = existedEntry;
             }
             else
@@ -40,11 +40,11 @@ namespace Otus.HashFunctionsAndTables.Logic
                 {
                     if (existedEntry.Next == null)
                     {
-                        existedEntry.Next = new Entry(key, value);
+                        existedEntry.Next = new Entry<TKey, TValue>(key, value);
                         return;
                     }
 
-                    if (existedEntry.Next.Key == key)
+                    if (existedEntry.Next.Key.Equals(key))
                     {
                         existedEntry.Next.Value = value;
                     }
@@ -55,7 +55,7 @@ namespace Otus.HashFunctionsAndTables.Logic
             }
         }
 
-        public Entry Get(int key)
+        public Entry<TKey, TValue> Get(TKey key)
         {
             var indexInBuckets = GetHash(key);
             
@@ -63,7 +63,7 @@ namespace Otus.HashFunctionsAndTables.Logic
             if (existedEntry == null)
                 return null;
 
-            if (existedEntry.Key == key)
+            if (existedEntry.Key.Equals(key))
                 return existedEntry;
 
             do
@@ -73,7 +73,7 @@ namespace Otus.HashFunctionsAndTables.Logic
                     return null;
                 }
 
-                if (existedEntry.Next.Key == key)
+                if (existedEntry.Next.Key.Equals(key))
                 {
                     return existedEntry.Next;
                 }
@@ -85,7 +85,7 @@ namespace Otus.HashFunctionsAndTables.Logic
             return null;
         }
 
-        public bool Remove(int key)
+        public bool Remove(TKey key)
         {
             var indexInBuckets = GetHash(key);
 
@@ -93,10 +93,10 @@ namespace Otus.HashFunctionsAndTables.Logic
             if (existedEntry == null)
                 return false;
 
-            Entry previousEntry = null;
+            Entry<TKey, TValue> previousEntry = null;
             while (existedEntry != null)
             {
-                if (existedEntry.Key == key)
+                if (existedEntry.Key.Equals(key))
                 {
                     if (previousEntry == null)
                     {
@@ -121,17 +121,12 @@ namespace Otus.HashFunctionsAndTables.Logic
         
         #region Support Methods
 
-        private int GetHash(int key)
-        {
-            return Math.Abs(key.GetHashCode() % Buckets.Length);
-        }
-
         private void Rehash()
         {
             _capacity = Buckets.Length * 2;
             
             var oldBuckets = Buckets;
-            Buckets = new Entry[_capacity];
+            Buckets = new Entry<TKey, TValue>[_capacity];
 
             for (var i = 0; i < oldBuckets.Length; i++)
             {
@@ -153,6 +148,11 @@ namespace Otus.HashFunctionsAndTables.Logic
                     currentEntry.Next = previousNextEntry;
                 }
             }
+        }
+
+        private int GetHash(TKey key)
+        {
+            return Math.Abs(key.GetHashCode() % Buckets.Length);
         }
 
         #endregion

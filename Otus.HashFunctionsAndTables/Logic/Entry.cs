@@ -1,12 +1,12 @@
 ﻿namespace Otus.HashFunctionsAndTables.Logic
 {
-    public class Entry
+    public class Entry<TK, TV>
     {
-        public int Key { get; set; }
-        public string Value { get; set; }
-        public Entry Next { get; set; }
+        public TK Key { get; set; }
+        public TV Value { get; set; }
+        public Entry<TK, TV> Next { get; set; }
 
-        public Entry(int key, string value)
+        public Entry(TK key, TV value)
         {
             Key = key;
             Value = value;

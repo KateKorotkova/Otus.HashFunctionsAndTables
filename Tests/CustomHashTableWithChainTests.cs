@@ -18,7 +18,7 @@ namespace Tests
         [Test]
         public void Can_Put_Without_Collision()
         {
-            var hashTable = new CustomHashTableWithChain(_capacity);
+            var hashTable = new CustomHashTableWithChain<int, string>(_capacity);
 
             var key = 1;
             var value = _random.Next().ToString();
@@ -31,7 +31,7 @@ namespace Tests
         [Test]
         public void Can_Put_With_One_Collision()
         {
-            var hashTable = new CustomHashTableWithChain(_capacity);
+            var hashTable = new CustomHashTableWithChain<int, string>(_capacity);
 
             var firstKey = 1;
             var firstValue = _random.Next().ToString();
@@ -50,7 +50,7 @@ namespace Tests
         [Test]
         public void Can_Put_With_Two_Collisions()
         {
-            var hashTable = new CustomHashTableWithChain(_capacity);
+            var hashTable = new CustomHashTableWithChain<int, string>(_capacity);
 
             var firstKey = 1;
             var firstValue = _random.Next().ToString();
@@ -74,7 +74,7 @@ namespace Tests
         [Test]
         public void Can_Put_With_Rehash_Without_Collisions()
         {
-            var hashTable = new CustomHashTableWithChain(1);
+            var hashTable = new CustomHashTableWithChain<int, string>(1);
 
             var firstKey = 1;
             var firstValue = _random.Next().ToString();
@@ -98,7 +98,7 @@ namespace Tests
         [Test]
         public void Can_Get_Without_Collision()
         {
-            var hashTable = new CustomHashTableWithChain(_capacity);
+            var hashTable = new CustomHashTableWithChain<int, string>(_capacity);
             var key = 1;
             var value = _random.Next().ToString();
             hashTable.Put(key, value);
@@ -113,7 +113,7 @@ namespace Tests
         [Test]
         public void Can_Get_With_One_Collision()
         {
-            var hashTable = new CustomHashTableWithChain(_capacity);
+            var hashTable = new CustomHashTableWithChain<int, string>(_capacity);
             var firstKey = 1;
             var firstValue = _random.Next().ToString();
             var secondKey = 11;
@@ -131,7 +131,7 @@ namespace Tests
         [Test]
         public void Can_Get_With_Two_Collisions()
         {
-            var hashTable = new CustomHashTableWithChain(_capacity);
+            var hashTable = new CustomHashTableWithChain<int, string>(_capacity);
             var firstKey = 1;
             var firstValue = _random.Next().ToString();
             var secondKey = 11;
@@ -149,12 +149,10 @@ namespace Tests
             Assert.That(result.Value, Is.EqualTo(thirdValue));
         }
 
-
-
         [Test]
         public void Can_Remove_Without_Collision()
         {
-            var hashTable = new CustomHashTableWithChain(_capacity);
+            var hashTable = new CustomHashTableWithChain<int, string>(_capacity);
             var key = 1;
             hashTable.Put(key, _random.Next().ToString());
 
@@ -167,7 +165,7 @@ namespace Tests
         [Test]
         public void Can_Remove_With_One_Collision()
         {
-            var hashTable = new CustomHashTableWithChain(_capacity);
+            var hashTable = new CustomHashTableWithChain<int, string>(_capacity);
             var firstKey = 1;
             var secondKey = 11;
             hashTable.Put(firstKey, _random.Next().ToString());
@@ -183,7 +181,7 @@ namespace Tests
         [Test]
         public void Can_Remove_With_Two_Collisions()
         {
-            var hashTable = new CustomHashTableWithChain(_capacity);
+            var hashTable = new CustomHashTableWithChain<int, string>(_capacity);
             var firstKey = 1;
             var secondKey = 11;
             var thirdKey = 21;
@@ -202,7 +200,7 @@ namespace Tests
         [Test]
         public void Can_Remove_With_Two_Collisions_In_A_Middle()
         {
-            var hashTable = new CustomHashTableWithChain(_capacity);
+            var hashTable = new CustomHashTableWithChain<int, string>(_capacity);
             var firstKey = 1;
             var secondKey = 11;
             var thirdKey = 21;
