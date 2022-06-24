@@ -6,8 +6,9 @@ namespace Otus.HashFunctionsAndTables.Logic
     {
         private int _capacity;
         private int _size;
-        private readonly float _loadFactor = 0.5f;
-        private int Threshold => (int) (_capacity * _loadFactor);
+
+        private const float _loadFactor = 0.5f;
+        private int _threshold => (int) (_capacity * _loadFactor);
 
         public Entry<TKey, TValue>[] Buckets { get; set; }
 
@@ -25,7 +26,7 @@ namespace Otus.HashFunctionsAndTables.Logic
             var existedEntry = Buckets[indexInBuckets];
             if (existedEntry == null)
             {
-                if (++_size > Threshold)
+                if (++_size > _threshold)
                 {
                     Rehash();
                     indexInBuckets = GetHash(key);

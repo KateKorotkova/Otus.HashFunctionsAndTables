@@ -24,8 +24,7 @@ namespace Tests
             var value = _random.Next().ToString();
             hashTable.Put(key, value);
 
-            Assert.That(hashTable.Buckets[1].Key, Is.EqualTo(key));
-            Assert.That(hashTable.Buckets[1].Value, Is.EqualTo(value));
+            Assert.True(hashTable.Buckets[1].IsEqual(key, value));
         }
 
         [Test]
